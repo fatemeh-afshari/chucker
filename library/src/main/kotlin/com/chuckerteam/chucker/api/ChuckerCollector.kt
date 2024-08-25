@@ -28,7 +28,7 @@ import kotlinx.coroutines.withContext
  * @param retentionPeriod Set the retention period for HTTP transaction data captured
  * by this collector. The default is one week.
  */
-public class ChuckerCollector
+ class ChuckerCollector
     @JvmOverloads
     constructor(
         context: Context,
@@ -48,7 +48,7 @@ public class ChuckerCollector
          * Call this method when you send an HTTP request.
          * @param transaction The HTTP transaction sent
          */
-        internal fun onRequestSent(transaction: HttpTransaction) {
+         fun onRequestSent(transaction: HttpTransaction) {
             scope.launch {
                 withContext(Dispatchers.IO) {
                     RepositoryProvider.transaction().insertTransaction(transaction)
@@ -68,7 +68,7 @@ public class ChuckerCollector
          * It must be called after [ChuckerCollector.onRequestSent].
          * @param transaction The sent HTTP transaction completed with the response
          */
-        internal fun onResponseReceived(transaction: HttpTransaction) {
+         fun onResponseReceived(transaction: HttpTransaction) {
             scope.launch {
                 val updated =
                     withContext(Dispatchers.IO) {
@@ -90,7 +90,7 @@ public class ChuckerCollector
          * @param exportFormat The export format: LOG or HAR
          * @return The content uri of a file with the transactions in or null if the export failed.
          */
-        public fun writeTransactions(
+         fun writeTransactions(
             context: Context,
             startTimestamp: Long?,
             exportFormat: ExportFormat = ExportFormat.LOG,

@@ -28,7 +28,7 @@ import java.util.Date
  */
 @Suppress("LongParameterList")
 @Entity(tableName = "transactions")
-internal class HttpTransaction(
+ class HttpTransaction(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     var id: Long = 0,
