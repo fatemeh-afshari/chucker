@@ -49,13 +49,8 @@ buildscript {
     }
 
     repositories {
-        maven {
-            credentials {
-                username = System.getenv("ARTIFACTORY_ANDROID_USERNAME")
-                password = System.getenv("ARTIFACTORY_ANDROID_PASSWORD")
-            }
-            url = "https://artifactory.tapsi.tech/artifactory/android-gradle-maven"
-        }
+        google()
+        gradlePluginPortal()
     }
 
     dependencies {
@@ -87,13 +82,8 @@ allprojects {
     group = GROUP
 
     repositories {
-        maven {
-            credentials {
-                username = System.getenv("ARTIFACTORY_ANDROID_USERNAME")
-                password = System.getenv("ARTIFACTORY_ANDROID_PASSWORD")
-            }
-            url = "https://artifactory.tapsi.tech/artifactory/android-gradle-maven"
-        }
+        google()
+        mavenCentral()
     }
 
     tasks.withType(Test) {
