@@ -28,7 +28,7 @@ import java.util.Date
  */
 @Suppress("LongParameterList")
 @Entity(tableName = "transactions")
- class HttpTransaction(
+class HttpTransaction(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     var id: Long = 0,
@@ -218,6 +218,7 @@ import java.util.Date
             contentType.contains("xml", ignoreCase = true) -> FormatUtils.formatXml(body)
             contentType.contains("x-www-form-urlencoded", ignoreCase = true) ->
                 FormatUtils.formatUrlEncodedForm(body)
+
             else -> body
         }
     }
@@ -241,6 +242,7 @@ import java.util.Date
             contentType.contains("json", ignoreCase = true) && context != null -> {
                 SpanTextUtil(context).spanJson(body)
             }
+
             else -> formatBody(body.toString(), contentType)
         }
     }

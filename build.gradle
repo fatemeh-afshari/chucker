@@ -69,6 +69,7 @@ buildscript {
         classpath "com.squareup.wire:wire-gradle-plugin:$wireVersion"
         classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:$nexusStagingPlugin"
         classpath "com.google.devtools.ksp:symbol-processing-gradle-plugin:$kspVersion"
+        classpath "org.jfrog.buildinfo:build-info-extractor-gradle:5.2.5"
     }
 }
 apply plugin: 'binary-compatibility-validator'
@@ -99,6 +100,39 @@ allprojects {
     tasks.withType(Test) {
         testLogging {
             events "skipped", "failed", "passed"
+        }
+    }
+}
+
+subprojects {
+    apply plugin: 'maven-publish'
+    apply plugin: "com.jfrog.artifactory"
+
+    publishing {
+        repositories {
+            maven {
+                url "https://artifactory.tapsi.tech/artifactory/tap30-release"
+                credentials {
+                    username = "gitlab_tartarus"
+                    password = "F20PpwISJd13LpD9Q3Xhqpix5sHVJ"
+                }
+            }
+        }
+    }
+
+    artifactory {
+        contextUrl = 'https://artifactory.tapsi.tech/artifactory/'
+        publish {
+            repository {
+                repoKey = 'tap30-release'
+                username = "gitlab_tartarus"
+                password = "F20PpwISJd13LpD9Q3Xhqpix5sHVJ"
+            }
+            defaults {
+                publications('maven')
+                publishArtifacts = true
+                publishPom = true
+            }
         }
     }
 }

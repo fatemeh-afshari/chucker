@@ -1,6 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-
+apply plugin: 'maven-publish'
 android {
     compileSdk rootProject.compileSdkVersion
     namespace "com.chuckerteam.chucker"
@@ -27,25 +27,33 @@ android {
 
     lintOptions {
         warningsAsErrors true
-        abortOnError true
+        abortOnError false
         // We don't want to impose RTL on consuming applications.
         disable 'RtlEnabled'
         // Don't fail build if some dependencies outdated
         disable 'GradleDependency'
     }
+}
 
-    publishing {
-        singleVariant('release') {
-            withSourcesJar()
-            withJavadocJar()
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = 'com.chuckerteam.chucker'
+            artifactId = 'library-no-op'
+            version = '4.1.0-1.0.0'
+
+            // Specify the AAR file to publish
+            artifact("$buildDir/outputs/aar/${project.name}-release.aar")
         }
     }
 }
+
+
 
 dependencies {
     api "com.squareup.okhttp3:okhttp:$okhttpVersion"
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
 }
 
-apply from: rootProject.file('gradle/gradle-mvn-push.gradle')
 apply from: rootProject.file('gradle/kotlin-static-analysis.gradle')

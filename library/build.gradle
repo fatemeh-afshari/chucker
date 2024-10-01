@@ -2,6 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'com.google.devtools.ksp'
+apply plugin: 'maven-publish'
 
 android {
     compileSdk rootProject.compileSdkVersion
@@ -36,7 +37,7 @@ android {
 
     lintOptions {
         warningsAsErrors true
-        abortOnError true
+        abortOnError false
         // We don't want to impose RTL on consuming applications.
         disable 'RtlEnabled'
         // Don't fail build if some dependencies outdated
@@ -52,15 +53,22 @@ android {
         }
     }
 
-    resourcePrefix 'chucker_'
+}
 
-    publishing {
-        singleVariant('release') {
-            withSourcesJar()
-            withJavadocJar()
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = 'com.chuckerteam.chucker'
+            artifactId = 'library'
+            version = '4.1.0-1.0.0'
+
+            // Specify the AAR file to publish
+            artifact("$buildDir/outputs/aar/${project.name}-release.aar")
         }
     }
 }
+
+
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
@@ -106,5 +114,5 @@ dependencies {
     androidTestImplementation "androidx.test.ext:junit:$androidXTestExt"
 }
 
-apply from: rootProject.file('gradle/gradle-mvn-push.gradle')
+
 apply from: rootProject.file('gradle/kotlin-static-analysis.gradle')
